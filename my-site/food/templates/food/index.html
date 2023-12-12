@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My site</title>
 </head>
 <body>
     <h1>This is just a template</h1>
+    {% for item in item_list%}
+    <ul>
+        <li> <a href="{% url 'food:detail' item.id %}"> {{ item.id }} -- {{ item.item_name }}</a></li>
+    </ul>
+       
+    {% endfor %}
+
+    
 </body>
 </html>
