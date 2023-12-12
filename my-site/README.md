@@ -10,11 +10,14 @@ cmd : source env_name/bin/activate
 # install django
 cmd : pip install django
 
-# Creating a project¶ 
-cmd : django-admin startproject mysite
+# Creating a project in current folder ¶ 
+cmd : django-admin startproject mysite .
 
 # The development server¶
 cmd : python manage.py runserver
+
+# Creating the Food app¶
+cmd  : python manage.py startapp food
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -26,8 +29,6 @@ STATICFILES_DIRS = [
 ]
 
 
-# Creating the Polls app¶
-cmd  : python manage.py startapp polls
 
 # creating super user
 cmd : python manage.py createsuperuser
