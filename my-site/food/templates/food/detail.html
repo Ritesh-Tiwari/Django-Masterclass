@@ -13,15 +13,16 @@
         <div class="row">
             <div class="col-md-6">
 
-                <img src="{{ item.item_image}}" alt="" sizes="food image" height="250px" class="card">
+                <img src="{{ object.item_image}}" alt="" sizes="food image" height="250px" class="card">
 
             </div>
             <div class="col-md-6">
 
-                <h1> Name : {{ item.item_name }}</h1>
-                <h1> Desciption : {{ item.item_desc }}</h1>
-                <h1> Price : ${{ item.item_price }}</h1>
-                <a href="{% url 'food:delete_item' item.id %}" class="btn btn-danger"> Delete</a>
+                <h1> Name : {{ object.item_name }}</h1>
+                <h1> Desciption : {{ object.item_desc }}</h1>
+                <h1> Price : ${{ object.item_price }}</h1>
+                <h1> Created By : {{ object.user_name }}</h1>
+                <a href="{% url 'food:delete_item' object.id %}" class="btn btn-danger"> Delete</a>
             </div>
         </div>
     </div>
