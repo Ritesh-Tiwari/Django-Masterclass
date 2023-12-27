@@ -58,6 +58,10 @@
                             <label for="inputZip">Zip</label>
                             <input type="text" class="form-control" name="zipcode" id="zipcode">
                         </div>
+                        <div class="form-group col-md-2">
+                            <label for="total">Amount to be paid</label>
+                            <input type="text" class="form-control" name="total" id="total" readonly>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Place Order</button>
                 </form>
@@ -73,16 +77,24 @@
     } else {
         cart = JSON.parse(localStorage.getItem('cart'))
     }
-
+    let total = 0
     for (item in cart) {
         let name = cart[item][1];
         let qty = cart[item][0];
+        let price = cart[item][2];
+        total = total + cart[item][2];
 
-        itemString = `<li class="list-group-item">${name}-${qty}</li>`
+        itemString = `<li class="list-group-item"><span class="">${qty}</span> of ${name}  <span class="badge badge-warning badge-pill">${price}</span></li>`
         $('#item_list').append(itemString);
     }
+    totalPrice = `<li class="list-group-item d-flex justify-content-between align-item-center"> <b> Your Total </b> ${total} </li> `;
+    $('#item_list').append(totalPrice);
+    
+        
 
     $("#items").val(JSON.stringify(cart));
+    $("#total").val(total);
+    
 
 </script>
 
