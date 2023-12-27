@@ -19,3 +19,22 @@ class Products(models.Model):
         managed = True
         verbose_name = 'Products'
         verbose_name_plural = 'Products'
+
+
+class Order(models.Model):
+    items   = models.CharField(max_length=1000)
+    name    = models.CharField(max_length=250)
+    email   = models.CharField(max_length=250)
+    address = models.CharField(max_length=250)
+    city    = models.CharField(max_length=50)
+    state   = models.CharField(max_length=50)
+    zipcode = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = ''
+        managed = True  
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
