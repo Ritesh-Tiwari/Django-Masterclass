@@ -165,11 +165,12 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
         var cartString = "";
         var cartIndex =1;
         cartString += '<h5> This is your cart</h5>';
+        let cartObject = JSON.parse(localStorage.getItem('cart'));
 
         
-        for (var x in cart){
+        for (item in cartObject){
             cartString += cartIndex;
-           cartString+= document.getElementById("nm"+x).innerHTML + "Qty :"+ cart[x][0] + "<br>";
+            cartString+= cartObject[item][1] + "Qty :"+ cart[item][0] + "<br>";
             cartIndex +=1;
         }
         cartString += "<a href='/checkout'><button class='btn btn-warning'>Checkout </button></a>"; 
