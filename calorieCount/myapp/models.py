@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 class Food(models.Model):
@@ -14,3 +16,16 @@ class Food(models.Model):
     class Meta:
         verbose_name = 'Food'
         verbose_name_plural = 'Foods'
+
+
+class Consume(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    food_consume = models.ForeignKey(Food, on_delete = models.CASCADE)
+
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = 'Consume'
+        verbose_name_plural = 'Consumes'
