@@ -13,7 +13,7 @@ class Post(models.Model):
     slug    = models.SlugField(max_length=200, blank=True)
     created = models.DateField(auto_now_add=True)
     liked_by= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='posts_liked',blank=True)
-    
+
 
 
     def __str__(self):
@@ -28,3 +28,19 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    body = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now = True)
+    postted_by = models.CharField(max_length=100)
+
+
+    def __str__(self):
+        return self.body
+
+    class Meta:
+        ordering = ['created']
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
