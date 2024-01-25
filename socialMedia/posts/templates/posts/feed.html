@@ -1,0 +1,93 @@
+{% extends "users/base.html" %}
+{% load mathfilters %}
+
+{% load static %}
+
+{% block body %}
+<div class="mt-4 p-4 text-center">
+    <h2 class="mb-2 text-dark">My Posts</h2>
+</div>
+
+<div class="container">
+
+    {% for post in posts %}
+    <div class="row">
+        <div class="col-lg-4 mx-auto">
+
+            <a href="#" style="text-decoration: none;">
+                <div class="card my-4">
+                    <div class="card-header">
+                        <div class="d-flex mx-0">
+                            <img src="{{ post.user.profile.photo.url}}" alt="" srcset="" width="48px">
+                            <h2 class="text-primary"> {{ post.user}} </h2>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 py-0">
+
+                        <!-- <h5 class="card-title"><h1>{{ post.title }}</h1>   </h5> -->
+                        <img style="width: 100%;" src="{{ post.image.url }}" alt="logo" srcset="" width="50%">
+
+                        <!-- <p class="card-text">{{ post.caption }}</p> -->
+                    </div>
+                    <div>
+                        <div class="px-4 py-3 ">
+                            <div class="icon-container flex">
+                                <a id={{post.id}} class="btn-like">
+                                    {% if logged_user in post.liked_by.all %}
+                                    <img style="width: 30px;" src="{% static 'users/images/red_like.png' %}"
+                                        alt="like-icon">
+                                    {% else %}
+                                    <img style="width: 30px;" src="{% static 'users/images/white_like.png' %}"
+                                        alt="like-icon">
+
+                                    {% endif %}
+                                </a>
+                                <img style="width: 30px;" src="{% static 'users/images/comment.png' %}"
+                                    alt="comment-icon">
+                                <img style="width: 30px;" src="{% static 'users/images/share.png' %}" alt="shere-icon">
+                            </div>
+                        </div>
+                        <div>
+                            {% if post.liked_by.count < 1 %} 
+
+                            {% elif post.liked_by.count == 1 %}
+                                {{ post.liked_by.first }} Likes this
+                            {% elif post.liked_by.count > 1 %}
+                                {{ post.liked_by.first }} & {{ post.liked_by.count | sub:1 }} Other likes this
+                            {% endif %}
+                        </div>
+                        <div class="px-4 py-3">
+                            <div class="text-xl mb-2"> <b>{{ post.title }}</b></div>
+                            <p class="text-dark w-700">{{ post.caption }}</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        {% endfor %}
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.CSRF_TOKEN = "{{ csrf_token }}";
+            $(".btn-like").click(function (e) {
+                e.preventDefault();
+                var post_id = this.id;
+                $.ajax({
+                    type: "POST",
+                    url: "/posts/like",
+                    data: { post_id: post_id, csrfmiddlewaretoken: window.CSRF_TOKEN },
+                    // success: function (response) {
+
+                    // }
+                });
+                window.location.href = "http://127.0.0.1:8750/posts/feed";
+
+            });
+        });
+
+    </script>
+
+
+    {% endblock %}
