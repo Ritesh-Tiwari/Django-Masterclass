@@ -1,0 +1,284 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block body %}
+<div class="m-5 fs-2 fw-bold"> Add Expenses
+    <span class="material-symbols-outlined fw-bolder">add</span>
+</div>
+
+<form method="POST" class="shadow-lg m-5 px-3 pt-2 rounded">
+    {% csrf_token %}
+    <div class="container-fluid py-4 my-4 d-flex">
+        <div class="mx-4">
+            <div class="mb-3">
+                <label for="">Expanse Name</label>
+            </div>
+            <div class="border"> {{ expense_form.name }}</div>
+        </div>
+        <div class="mx-4">
+            <div class="mb-3">
+                <label for="">Amount</label>
+            </div>
+            <div class="border"> {{ expense_form.amount }}</div>
+        </div>
+        <div class="mx-4">
+            <div class="mb-3">
+                <label for="">Category</label>
+            </div>
+            <div class="border"> {{ expense_form.category }}</div>
+        </div>
+        <div class="mx-5 mt-2">
+            <button class="btn btn-success px-4 my-4 rounded"> Add</button>
+        </div>
+
+
+    </div>
+    <!-- {{expense_form.as_p}} -->
+</form>
+
+<div class="m-5 fs-2 fw-bold"> Expenses
+    <span class="material-symbols-outlined text-success">universal_currency</span>
+
+</div>
+<div class="shadow-lg  rounded m-5 p-5">
+    <table class="table table-borderless ">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Category</th>
+                <th scope="col">Date</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td><span class="fw-bold ">{{expense.name}}</span></td>
+                <td><span class="fw-bold "> $ {{ expense.amount |intcomma }}</span></td>
+                <td><span class="fw-bold ">{{expense.category}}</span></td>
+                <td><span class="fw-bold ">{{expense.date}}</span></td>
+                <td>
+                    <span>
+                        <a href="{% url 'edit' expense.id %}" class="btn">
+                            <img width="28px" src="{% static 'myapp/images/edit.png' %}" alt="edit" srcset="">
+                        </a>
+                    </span>
+                </td>
+
+                <td>
+                    <span>
+                        <form action="{% url 'delete' expense.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="delete" class="btn ">
+                                <img width="28px" src="{% static 'myapp/images/delete.png' %}" alt="delete" srcset="">
+                            </button>
+                        </form>
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+            <!-- Displaying total -->
+            <tr>
+                <td></td>
+                <td>
+                    <span class="text-success fw-bold">
+                        Total : $ {{ total_expenses.amount__sum | intcomma }}
+                    </span>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex mx-5">
+    <div class="shadow-lg me-3 rounded" style="width: 25rem;">
+        <h5 class="me-3 px-3 pt-4 fw-bold text-secoundry">LAST 365 DAYS</h5>
+        <h1 class="me-3 px-3 my-4 fs-3 text-success fw-bold">
+            {{yearly_sum.amount__sum | intcomma }}
+        </h1>
+    </div>
+
+    <div class="shadow-lg me-3 rounded" style="width: 25rem;">
+        <h5 class="me-3 px-3 pt-4 fw-bold text-secoundry">LAST 30 DAYS</h5>
+        <h1 class="me-3 px-3 my-4 fs-3 text-success fw-bold">
+            {{monthly_sum.amount__sum | intcomma }}
+        </h1>
+    </div>
+
+    <div class="shadow-lg me-3 rounded" style="width: 25rem;">
+        <h5 class="me-3 px-3 pt-4 fw-bold text-secoundry">LAST 7 DAYS</h5>
+        <h1 class="me-3 px-3 my-4 fs-3 text-success fw-bold">
+            {{weekly_sum.amount__sum | intcomma }}
+        </h1>
+    </div>
+</div>
+
+<section>
+    <div class="d-flex">
+        <div class="col-6  col-lg-5 shadow-lg m-5">
+            <div class="d-flex fw-bold flex-wrap px-5 py-3">
+                <span>Past 30 days Sum expenses</span>
+            </div>
+            <hr>
+            <div id="30-day-table" class="pb-5">
+                {% for daily_sum in daily_sums %}
+                <div class="px-5 py-2">
+                    <span class="text-dark fw-bold"> {{ daily_sum.date }}</span>
+                </div>
+                <div class="px-5 py-2">
+                    <span class="fw-bold text-success"> $ {{ daily_sum.sum }}</span>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-6  col-lg-5 shadow-lg m-5">
+            <div class="d-flex fw-bold flex-wrap px-5 py-3">
+                <span>Categorical expenses</span>
+            </div>
+            <hr>
+            <div id="cat-sum-table" class="pb-5">
+                {% for categorical_sum in categorical_sums %}
+                <div class="px-5 py-2">
+                    <span class="text-dark fw-bold"> {{ categorical_sum.category }}</span>
+                </div>
+                <div class="px-5 py-2">
+                    <span class="fw-bold text-success"> $ {{ categorical_sum.sum  }}</span>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div class="d-flex">
+    <div class="col-5 shadow-lg m-5">
+        <h1 class="m-3">Expense spread across categories</h1>
+        <canvas id="myChart" class="m-3"></canvas>
+    </div>
+    <div class=" col-5 shadow-lg m-5">
+        <h1 class="m-3">Daily Expense Sum</h1>
+        <canvas id="myChart1" class="m-3"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
+
+<script>
+
+    const cats = []
+    const cat_sums = []
+
+    const dates = []
+    const sums = []
+
+    const catSumDiv = document.getElementById('cat-sum-table').getElementsByTagName('div');
+
+    for (i = 0; i < catSumDiv.length; i++) {
+        if (i % 2 == 1) {
+            cat_sums.push(catSumDiv[i].innerText.replace("$", ""))
+        } else {
+            cats.push(catSumDiv[i].innerText)
+        }
+    }
+
+
+    const dailySumDiv = document.getElementById('30-day-table').getElementsByTagName('div');
+
+    for (i = 0; i < dailySumDiv.length; i++) {
+        if (i % 2 == 1) {
+            sums.push(dailySumDiv[i].innerText.replace("$", ""))
+        } else {
+            dates.push(dailySumDiv[i].innerText)
+        }
+    }
+
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: cats,
+            datasets: [{
+                label: 'Expense across categories',
+                data: cat_sums,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    console.log(dates)
+    console.log(sums)
+    var ctx1 = document.getElementById('myChart1').getContext('2d');
+    var myChart1 = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Sum of daily expenses',
+                data: sums,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+</script>
+
+
+
+
+{% endblock %}
