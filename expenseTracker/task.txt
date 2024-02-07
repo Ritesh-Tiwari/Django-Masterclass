@@ -1,5 +1,0 @@
-Task : 
-1. Create login page
-2. Create singup page
-3. Display the logged in user expenses
-4. Ristrict the other user they can not see other users expenses
