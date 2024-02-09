@@ -82,6 +82,10 @@ DATABASES = {
 }
 
 
+STRIPE_PUBLISHABLE_KEY ='pk_test_51LXOwTSDp8GtReZDowHa2pK04yMScDpP3fkkbPXtzg3MbDR8uEvUK9FBzpgWFcwVg4MCd9h8f9DzZNQCfflaBLCu00bnlOrfDg'
+STRIPE_SECRET_KEY = 'sk_test_51LXOwTSDp8GtReZD0YbHjIXRH65wjxWzObbSFVV3bhHFBtPdLTkrPJV9ZXiY83UQCrxIrPGt1Lr9gEnc4q06gezn00AyIDgdd8'
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
