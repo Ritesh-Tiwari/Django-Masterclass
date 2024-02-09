@@ -1,4 +1,21 @@
 {% extends "myapp/base.html" %}
 {% block body %}
-thus is a detail views
+<div class="d-flex p-4" >
+    <div>
+        <img src="https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+        alt="" srcset="" width="100%">
+
+    </div>
+
+    <div class="ps-4">
+        <div class="fs-1 fw-bold mb-3" >{{ product.name }}</div>
+        <div class="mb-2"> {{ product.description}} </div>
+        <div class="mb-2 text-success fw-bold" > $ {{ product.price}} </div>
+        <div>
+            <button id="checkout-button" class="btn btn-success btn-sm p-2 px-3 "> Buy </button>
+        </div>
+
+    </div>
+
+</div>
 {% endblock %}
