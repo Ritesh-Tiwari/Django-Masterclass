@@ -1,1 +1,7 @@
-Success
+{% extends "myapp/base.html" %}
+{% block body %}
+  <div class="grid justify-content-center" style="height: 60vh;">
+    <div class="fw-bold fs-1"> payment Successful</div>
+    <a class="btn btn-success" href="{{ order.product.file.url }}" download >Click here to Download</a>
+  </div>
+{% endblock %}
