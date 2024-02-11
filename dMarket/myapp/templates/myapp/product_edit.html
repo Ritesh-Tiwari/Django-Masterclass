@@ -1,6 +1,6 @@
 {% extends "myapp/base.html" %}
 {% block title %}
-<title>Create Product</title>
+<title>Edit Product</title>
 
 {% endblock %}
 {% block body %}
@@ -8,6 +8,7 @@
     <h3 class="fw-bold my-4"> Create Product</h3>
     <form  class="shadow-lg p-4" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+
         <div class="my-2">
             <label for="">Name</label>
             <div class="border p-2"> {{ product_form.name }}</div>
@@ -18,7 +19,6 @@
             <div class="border p-2"> {{ product_form.description }}</div>
         </div>
 
-        
 
         <div class="my-2">
             <label for="">Price</label>
@@ -35,6 +35,9 @@
         </div>
         
     </form>
+</div>
+<div class="mx-auto my-3" style="width: 50%;">
+    <a class="btn btn-danger px-3" href="{% url 'delete' product.id %}">Delete</a>
 </div>
 
 {% endblock %}

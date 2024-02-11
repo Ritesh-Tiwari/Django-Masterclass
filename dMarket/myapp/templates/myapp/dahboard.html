@@ -1,0 +1,53 @@
+{% extends "myapp/base.html" %}
+{% block title %}
+<title>Dashboard</title>
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <div class=" mt-4 fw-bold fs-3">My Products</div>
+        <div class="mt-4 ">
+            <a class="text-light bg-success px-4 py-2 " href="{% url 'createproduct' %}">New Product</a>
+        </div>
+    </div>
+
+    <!-- products  -->
+    <div class="product-container py-3 " s>
+        {% for product in products %}
+        <div class="shadow-lg d-flex m-2 p-2 justify-content-between">
+            <div class="d-flex">
+                <img src="https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+                    alt="" srcset="" width="150px%">
+                <div>
+                    <a href="{% url 'editproduct' product.id %}">
+                        <div class="box-details ms-3">
+                            <div class="text-dark fw-bold fs-6" >{{ product.name }}</div>
+                            <div class="text-success text-sm" > $ {{ product.price }}</div>
+                        </div>
+                        <div class="fw-bold text-dark ms-3 mt-4">Edit Product</div>
+                        
+                    </a>
+                </div>
+            </div>
+            <div>
+                <div class="fs-3">$200</div>
+                <div class="fs-6">Total earnings</div>
+            </div>
+
+            <div>
+                <div class="fs-3">20</div>
+                <div class="fs-6">Total orders</div>
+            </div>
+
+            <div>
+                <div class="fs-3">4.5</div>
+                <div class="fs-6">Ratings</div>
+            </div>
+
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock body %}

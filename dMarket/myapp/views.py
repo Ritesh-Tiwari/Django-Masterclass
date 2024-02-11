@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import Product, Orderdetail
-from .forms import ProductForm
+from .forms import ProductForm, UserRegistrationForm
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import stripe
@@ -94,3 +94,30 @@ def create_product(request):
     product_form = ProductForm()
 
     return render(request,'myapp/create_product.html',{'product_form': product_form})
+
+
+def product_edit(request,id):
+    product = Product.objects.get(id=id)
+    product_form = ProductForm(request.POST or None,request.FILES or None, instance=product)
+    if request.method =='POST':
+        if product_form.is_valid():
+            product_form.save()
+            return redirect('index')
+    return render(request,'myapp/product_edit.html',{'product_form': product_form,'product':product})
+
+def product_delete(request, id):
+    product = Product.objects.get(id=id)
+    if request.method =='POST':
+        product.delete()
+        return redirect('index')
+    return render (request, 'myapp/delete.html',{'product':product})
+
+def dashboard(request):
+    products = Product.objects.all()
+
+    return render(request,'myapp/dahboard.html',{'products':products})
+
+def register(request):
+    user_form = UserRegistrationForm()
+
+    return render(request,'myapp/register.html',{'user_form':user_form})
