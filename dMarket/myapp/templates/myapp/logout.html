@@ -1,0 +1,12 @@
+{% extends "myapp/base.html" %}
+{% block title %}
+<title>Registration Form</title>
+{% endblock title %}
+
+{% block body %}
+<div class="container mt-5 text-center">
+    <h1 class="text-lg fw-bold"> You have been logged out.</h1>
+    <p><span class="fs-5"><a class="text-primary" href="{% url 'login' %}">Click Here</a> to log back in</span></p>
+</div>  
+
+{% endblock body %}

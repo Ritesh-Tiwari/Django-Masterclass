@@ -1,0 +1,30 @@
+{% extends "myapp/base.html" %}
+{% block title %}
+  <title>Login Form</title>
+{% endblock title %}
+
+{% block body %}
+<div class="container mt-5">
+ <h1 class="text-lg fw-bold"> Login</h1>
+ <form action="" method="post" class="shadow-lg p-4">
+    {% csrf_token %}
+    <div class="mb-2">
+        <label for="">Username</label>
+        <div class="border rounded py-2 px-2 me-5">{{ form.username}}</div>
+    </div>
+
+
+    <div class="mb-2">
+        <label for="">Password</label>
+        <div class="border rounded py-2 px-2 me-5">{{ form.password}}</div>
+    </div>
+
+    <div class="my-4">
+        <button type="submit" class="btn btn-success">Login</button>
+
+    </div>
+ </form>
+ <p class="fw-bold my-4 fs-5">New to the website ? <a class="text-primary" href="{% url 'register' %}">Click here</a> to register</p>
+</div>
+
+{% endblock body %}
