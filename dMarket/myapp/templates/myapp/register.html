@@ -4,9 +4,42 @@
 {% endblock title %}
 
 {% block body %}
- <form action="" method="post">
+<div class="container mt-5">
+ <h1 class="text-lg fw-bold"> Register</h1>
+ <form action="" method="post" class="shadow-lg p-4">
     {% csrf_token %}
-    {{user_form.as_p}}
-    <button type="submit" class="btn btn-success">Create User</button>
+    <div class="mb-2">
+        <label for="">Username</label>
+        <div class="border rounded py-2 px-2 me-5">{{ user_form.username}}</div>
+    </div>
+
+
+    <div class="mb-2">
+        <label for="">Frist Name</label>
+        <div class="border rounded py-2 px-2 me-5">{{ user_form.first_name}}</div>
+    </div>
+
+
+    <div class="mb-2">
+        <label for="">Email</label>
+        <div class="border rounded py-2 px-2 me-5">{{ user_form.email}}</div>
+    </div>
+
+
+    <div class="mb-2">
+        <label for="">Password</label>
+        <div class="border rounded py-2 px-2 me-5">{{ user_form.password}}</div>
+    </div>
+
+    <div class="mb-2">
+        <label for="">Confirm Password</label>
+        <div class="border rounded py-2 px-2 me-5">{{ user_form.password2}}</div>
+    </div>
+    <div class="my-4">
+        <button type="submit" class="btn btn-success">Create User</button>
+
+    </div>
  </form>
+</div>
+
 {% endblock body %}
