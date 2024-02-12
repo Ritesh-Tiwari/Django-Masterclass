@@ -122,7 +122,7 @@ def product_delete(request, id):
     return render (request, 'myapp/delete.html',{'product':product})
 
 def dashboard(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(seller=request.user)
 
     return render(request,'myapp/dahboard.html',{'products':products})
 
@@ -141,3 +141,12 @@ def register(request):
 
 def invalid(request):
     return render(request, 'myapp/invalid.html')
+
+def my_purchases(request):
+    orders = Orderdetail.objects.filter(customer_email=request.user.email)
+    context = {
+        'orders':orders
+    }
+ 
+    
+    return render(request, 'myapp/purchases.html', context)

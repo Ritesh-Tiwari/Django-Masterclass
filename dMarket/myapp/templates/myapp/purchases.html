@@ -1,0 +1,61 @@
+{% extends "myapp/base.html" %}
+{% block title %}
+<title>Dashboard</title>
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <div class=" mt-4 fw-bold fs-3">My Purchases</div>
+        <div class="mt-4 ">
+            <a class="text-light bg-success px-4 py-2 " href="{% url 'createproduct' %}">New Product</a>
+        </div>
+    </div>
+
+    <!-- products  -->
+    <div class="order-container shadow-lg  py-3 ">
+        <div class="m-2 p-2 row fw-bold">
+            <div class="col-3">
+               Product Name
+            </div>
+
+            <div class="col-3">
+                Amount paid
+            </div>
+
+            <div class="col-3">
+                Order Date
+            </div>
+
+            <div class="col-3">
+                Download Link
+            </div>
+        </div>
+
+        
+        {% for order in orders %}
+
+        <div class="m-2 p-2 row">
+            <div class="col-3">
+                {{ order.product.name}}
+
+            </div>
+            <div class="col-3 text-success fw-bold">
+                $ {{ order.amount }}
+
+            </div>
+            <div class="col-3">
+                {{ order.created_on }}
+
+            </div>
+            <div class="col-3">
+                <a class="btn btn-success" href="{{order.product.file.url}}" download>Click to download</a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock body %}
