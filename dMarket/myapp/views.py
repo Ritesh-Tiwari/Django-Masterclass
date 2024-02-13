@@ -7,6 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 import stripe
 import json
 from django.http import JsonResponse, HttpResponseNotFound
+from django.db.models import Sum
+import datetime
+
 
 # Create your views here.
 def index(request):
@@ -150,3 +153,33 @@ def my_purchases(request):
  
     
     return render(request, 'myapp/purchases.html', context)
+
+def sales(request):
+    # trick to access the model field
+    orders = Orderdetail.objects.filter(product__seller = request.user)
+    total_sales = orders.aggregate(Sum('amount'))
+
+    # 365 days sales sum]
+    last_year = datetime.date.today() - datetime.timedelta(days=365)
+    data = Orderdetail.objects.filter(product__seller = request.user,created_on__gt=last_year)
+    yearly_sales = data.aggregate(Sum('amount'))
+    
+
+    # 365 days sales sum
+    last_month = datetime.date.today() - datetime.timedelta(days=30)
+    data = Orderdetail.objects.filter(product__seller = request.user,created_on__gt=last_month)
+    monthly_sales = data.aggregate(Sum('amount'))
+    
+    # 365 days sales sum
+    last_week = datetime.date.today() - datetime.timedelta(days=7)
+    data = Orderdetail.objects.filter(product__seller = request.user,created_on__gt=last_week)
+    weekly_sales = data.aggregate(Sum('amount'))
+    
+
+    context ={
+        'total_sales':total_sales,
+        'yearly_sales':yearly_sales,
+        'monthly_sales':monthly_sales,
+        'weekly_sales':weekly_sales,
+    }
+    return render(request,'myapp/sales.html',context)

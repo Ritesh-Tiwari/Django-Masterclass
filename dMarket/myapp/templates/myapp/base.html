@@ -33,7 +33,7 @@
       <div class="container-fluid">
         <div class="d-flex ms-4 justify-content-center" >
 <img src="https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/kiosk-trolley-street-food-asian-512.png" alt="Logo" width="48px">
-        <a class="navbar-brand ms-3 fw-bold" href="#">Digital Marketplace</a>
+        <a class="navbar-brand ms-3 fw-bold" href="{% url 'index' %}">Digital Marketplace</a>
 
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,7 @@
               <a class="nav-link active" aria-current="page" href="{% url "dashboard" %}">Dashboard</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Sales</a>
+              <a class="nav-link" href="{% url 'sales' %}">Sales</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Orders</a>
