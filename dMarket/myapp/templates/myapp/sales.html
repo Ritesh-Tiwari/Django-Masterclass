@@ -16,28 +16,173 @@
     </div>
     <div class="row">
         <div class="col-4 p-3">
-            <div class="shadow-lg">
-                <div>$ {{ yearly_sales.amount__sum  }}</div>
-                <div>Last 365 days</div>
+            <div class="shadow-lg p-3">
+                <div class="fw-bold fs-2">$ {{ yearly_sales.amount__sum }}</div>
+                <div class="mt-1">Last 365 days</div>
             </div>
         </div>
         <div class="col-4 p-3">
-            <div class="shadow-lg">
-                <div>$ {{ monthly_sales.amount__sum  }}</div>
-                <div>Last 30 days</div>
+            <div class="shadow-lg p-3">
+                <div class="fw-bold fs-2">$ {{ monthly_sales.amount__sum }}</div>
+                <div class="mt-1">Last 30 days</div>
             </div>
         </div>
         <div class="col-4 p-3">
-            <div class="shadow-lg">
-                <div>$ {{ weekly_sales.amount__sum  }}</div>
-                <div>Last 7 days</div>
+            <div class="shadow-lg p-3">
+                <div class="fw-bold fs-2">$ {{ weekly_sales.amount__sum }}</div>
+                <div class="mt-1">Last 7 days</div>
             </div>
         </div>
-    
+
+    </div>
+    <div class="row">
+        <div class="col-5 shadow-lg m-3" id="sales-table">
+            <div class="m-3 fw-bold fs-5">30 Days Sales</div>
+            <div class="row m-1 py-2">
+                <div class="col-6 fw-bold">
+                    Day
+                </div>
+                <div class="col-6 fw-bold">
+                    Total Sales
+                </div>
+            </div>
+            {% for daily_sales_sum in daily_sales_sums %}
+            <div class="row m-1 py-2">
+                <div class="col-6 created-date">
+                    {{daily_sales_sum.created_on__date}}
+                </div>
+                <div class="col-6 e fw-bold day-sum text-success">
+                    $ {{daily_sales_sum.sum}}
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+        <div class="col-6 shadow-lg m-3 ">
+            <div>
+                <canvas id="myChart"></canvas>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-6 shadow-lg m-3 ">
+            <div>
+                <canvas id="myChart1"></canvas>
+
+            </div>
+        </div>
+        <div class="col-5 shadow-lg m-3">
+            <div class="m-3 fw-bold fs-5">Product Sales</div>
+            <div class="row m-1 py-2">
+                <div class="col-6 fw-bold">
+                    Product Name
+                </div>
+                <div class="col-6 fw-bold">
+                    Total Sales
+                </div>
+            </div>
+            {% for product_sales_sum in product_sales_sums %}
+            <div class="row m-1 py-2">
+                <div class="col-6 product-name">
+                    {{product_sales_sum.product__name}}
+                </div>
+                <div class="col-6 fw-bold text-success product-sum">
+                    {{product_sales_sum.sum}}
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
     </div>
 
 </div>
 
+<script>
 
+    const sums = document.getElementsByClassName('day-sum')
+    const sum_values =[]
+    for(let i=0;i<sums.length;i++){
+      single_sum = sums[i].innerText
+      sum_values.push(parseInt(single_sum))
+    }
+    
+  
+  
+    const dates = document.getElementsByClassName('created-date')
+    const date_values =[]
+    for(let i=0;i<dates.length;i++){
+      single_date = dates[i].innerText
+      date_values.push(single_date)
+    }
+   
+  
+    const product_names = document.getElementsByClassName('product-name')
+    const name_values =[]
+    for(let i=0;i<product_names.length;i++){
+      single_name = product_names[i].innerText
+      name_values.push(single_name)
+    }
+    
+    const product_sums = document.getElementsByClassName('product-sum')
+    const product_sum_values =[]
+    for(let i=0;i<product_sums.length;i++){
+      single_sum = product_sums[i].innerText
+      product_sum_values.push(single_sum)
+    }
+    console.log(product_sum_values)
+  
+  
+    const ctx = document.getElementById('myChart');
+  
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: date_values,
+        datasets: [{
+          label: 'Sales for the past 30 days',
+          data: sum_values,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  
+  
+  
+    const ctx1 = document.getElementById('myChart1');
+  
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: name_values,
+        datasets: [{
+          label: 'Product sales sum',
+          data: product_sum_values,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+          
 
 {% endblock %}
